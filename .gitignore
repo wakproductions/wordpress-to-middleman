@@ -2,3 +2,5 @@
 
 *.xml
 export/
+.idea/
+.DS_Store
