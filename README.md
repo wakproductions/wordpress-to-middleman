@@ -26,6 +26,12 @@ Getting Started
 3.  In the terminal, navigate to the folder where the project has been saved, and run 
 		ruby wordpress_to_middleman.rb
 
+Gemified Version by Winston Kotzan
+----------------------------------
+This is a fork of the original worpress-to-middleman program designed to be more 'OO'. Some of the
+functionality in this version will be specific to converting www.greenspudtrades.com to Middleman.
+
+
 
 ### Please Note that this is a work in progress.  Contributions welcome.
 

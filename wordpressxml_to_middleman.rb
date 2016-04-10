@@ -1,3 +1,4 @@
+# Is this a legacy version of
 
 # Input: WordPress XML export file.
 # Outputs: a series of Markdown files ready to be included in a middleman site
