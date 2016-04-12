@@ -1,11 +1,17 @@
-Wordpress to Middleman Exporter
-===============================
+Wordpress to Middleman (W2M) Exporter
+=====================================
 
 A Ruby Script that will convert your exported Wordpress XML into markdown files with the appropriate [frontmatter](http://middlemanapp.com/basics/frontmatter/) metadata so that they are consumable by Middleman.
 
 Getting Started
 ----
+1. Clone this Github locally. Add this to your Middleman project's Gemfile and bundle install:
+```
+gem 'wordpress-to-middleman', path: '<your local path>'
+```
 
+
+Old Instructions:
 1.  Open up the wordpress_to_middleman.rb file and setup the following three variables
 	- WORDPRESS_XML_FILE_PATH (The path to the exported wordpress.xml file)
 	- OUTPUT_PATH (The path where all of the markdown posts will be saved)
@@ -25,11 +31,25 @@ Getting Started
 
 3.  In the terminal, navigate to the folder where the project has been saved, and run 
 		ruby wordpress_to_middleman.rb
+		
+### Migrating Images
+
+Wordpress stores images in the folder `wp-content/uploads/{year}/{month}/{filename}`. You want to copy all of the files
+in this `uploads` folder into your Middleman project's `source/images` folder.
+
+Example:
+`wp-content/uploads/2015/09/Main_thinkorswim__build_1876_16_.png`
+
+W2M will convert this to the path:
+`images/2015/09/Main_thinkorswim__build_1876_16_.png`
 
 Gemified Version by Winston Kotzan
 ----------------------------------
 This is a fork of the original worpress-to-middleman program designed to be more 'OO'. Some of the
-functionality in this version will be specific to converting www.greenspudtrades.com to Middleman.
+functionality in this version will be specific to converting www.greenspudtrades.com to Middleman. The website
+this was used on was running Wordpress 3.9.
+
+To see the original version of this program: [https://github.com/salmansqadeer/wordpress-to-middleman](https://github.com/salmansqadeer/wordpress-to-middleman)
 
 
 

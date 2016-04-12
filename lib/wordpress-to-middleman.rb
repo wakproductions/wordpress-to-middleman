@@ -1,0 +1,1 @@
+require 'wordpress-to-middleman/parser'
