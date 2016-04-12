@@ -16,13 +16,30 @@ module WordpressToMiddleman
     # Change this around to meet the needs of your own website
     def image_partial(image_url, caption_text)
       <<PARTIAL
-<%= partial 'image', locals: { filename: '#{extract_filename(image_url)}', caption: '#{caption_text}'} %>
+<%= partial 'image', locals: { filename: '#{extract_filename(image_url)}', caption: '#{sanitize_caption_text(caption_text)}'} %>
 PARTIAL
     end
 
-    def parse_images_with_captions
+    def insert_newlines_before_image_partials
+      partials = @parsed_content.scan /<%= partial.*?%>/m
+      return if partials.empty?
+      partials.each do |p|
+        index = @parsed_content.index(p[0])
+        if index > 0 && @parsed_content[index-1] != "\n"
+          @parsed_content.insert(index - 1, "\n\n")
+        end
+      end
+    end
+
+    def parse_images
       @parsed_content = original_content
-      matches = original_content.scan /(\[caption.*?\/caption\])/m
+      parse_images_with_captions
+      parse_images_without_captions
+      insert_newlines_before_image_partials
+    end
+
+    def parse_images_with_captions
+      matches = @parsed_content.scan /(\[caption.*?\/caption\])/m
       return if matches.nil?
 
       matches.each do |s|
@@ -36,18 +53,21 @@ PARTIAL
     end
 
     def parse_images_without_captions
-      @parsed_content = original_content
-      matches = original_content.scan /(<a href.*?<img.*?src="(.*?)".*?<\/a>)/m
+      matches = @parsed_content.scan(/(<a href.*?<\/a>)/m).select { |match| match[0].match /(<a href.*?<img.*?src="(.*?)".*?<\/a>)/m }
       return if matches.empty?
 
       matches.each do |s|
         image_box_text = s[0]
-        image_url = extract_filename(s[1])
+        image_url = extract_filename(image_box_text.match(/<a href.*?<img.*?src="(.*?)".*?<\/a>/m)[1])
         caption = ''
 
         @parsed_content.gsub!(image_box_text, image_partial(image_url, caption))
       end
       @parsed_content
+    end
+
+    def sanitize_caption_text(caption_text)
+      caption_text.gsub("'", "''")
     end
 
     # Converts:

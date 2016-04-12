@@ -104,8 +104,7 @@ TEXT
       @parsed_wordpress_xml = LoadXML.new(wordpress_xml_file_path).xml_content_to_hash
       @parsed_wordpress_xml.each do |pwxml|
         pi = ParseImages.new(pwxml[:content], original_domain)
-        pi.parse_images_with_captions
-        pi.parse_images_without_captions
+        pi.parse_images
         pwxml[:reformatted_content] = pi.parsed_content
       end
 

@@ -10,27 +10,19 @@ Getting Started
 gem 'wordpress-to-middleman', path: '<your local path>'
 ```
 
+2. Run the program using the following commands:
 
-Old Instructions:
-1.  Open up the wordpress_to_middleman.rb file and setup the following three variables
-	- WORDPRESS_XML_FILE_PATH (The path to the exported wordpress.xml file)
-	- OUTPUT_PATH (The path where all of the markdown posts will be saved)
-	- ORIGINAL_DOMAIN (The domain of the original website)
-	- SEPARATE_CATEGORIES_FROM_TAGS (List categories as its own YAML attribute. Defalut: `false` - all categories will be listed as tags)
-	- CONVERT_FROM_HTML (Convert HTML tags to markdown)
-2.  Ensure that all of the required gems are installed (Gemfile is included, so you can run `bundle`) - three in specific that are required are:
-	- nokogiri
-	- upmark
-	- html2md
-3.  Remove the following lines from the exported Wordpress XML (They mess with nokogiri's parser):
-		<!-- Debugging help, do not remove -->
-		<meta name="Framework" content="Kpress" />
-		<meta name="Theme Version" content="1.4.1" />
-		<meta name="Framework Version" content="1.4" />
-		<meta name="CMS Version" content="3.5.2" />
+```
+require 'wordpress-to-middleman'
+wtom = WordpressToMiddleman::Parser.new(
+	wordpress_xml_file_path: <path to wordpress export xml file>, 
+	output_dir: <directory where files will be output>, 
+	original_domain: <original url for your website, i.e. http://www.greenspudtrades.com/>, 
+	new_domain: <new base url for your website (nil if same)>
+	)
+wtom.parse
+```
 
-3.  In the terminal, navigate to the folder where the project has been saved, and run 
-		ruby wordpress_to_middleman.rb
 		
 ### Migrating Images
 
@@ -43,11 +35,15 @@ Example:
 W2M will convert this to the path:
 `images/2015/09/Main_thinkorswim__build_1876_16_.png`
 
+See the file `lib/wordpress-to-middleman/parse_images.rb`. Note that the new greenspudtrades.com uses a custom
+Middleman partial for displaying images, which this conversion program will reformat all images to use.
+
 Gemified Version by Winston Kotzan
 ----------------------------------
-This is a fork of the original worpress-to-middleman program designed to be more 'OO'. Some of the
-functionality in this version will be specific to converting www.greenspudtrades.com to Middleman. The website
-this was used on was running Wordpress 3.9.
+This is a fork of the original worpress-to-middleman program designed to be more 'OO'. It is a little rough
+as it was mainly used to converting www.greenspudtrades.com to Middleman. The original Greenspud Trades
+website was running Wordpress version 3.9. Feel free to submit a pull request if you have ideas for making it
+more end-user friendly.
 
 To see the original version of this program: [https://github.com/salmansqadeer/wordpress-to-middleman](https://github.com/salmansqadeer/wordpress-to-middleman)
 
